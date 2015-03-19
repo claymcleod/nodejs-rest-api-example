@@ -4,6 +4,9 @@
  * Usage:
  *	(1) Change the modelLocation variable to the location where your corresponding model
  *		is stored.
+ *
+ *	(2 - optional) Add custom routing for your API. NOTE: If you don't know what this means,
+ *				   you don't need it.
  */
 
 var modelLocation = '../models/Recipe'
