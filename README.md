@@ -2,21 +2,21 @@
 
 # NodeJS secure RESTFUL api
 
-A skeleton of a secure RESTFUL api for NodeJS. 
+A minimal, secure RESTFUL api for NodeJS. This project includes user login, access control of objects, and encrypted hashing of passwords right out of the box! Just delete the example models, add your own, and run!
 
 # Installation
 
-* Clone the repo by using ```git clone https://github.com/claymcleod/nodejs-secure-rest-api.git```
+* Clone the repo by using ```git clone```
 * Edit the private/config.js file to suit your needs.
 * Add APIs using the instructions below to suit your needs.
 
 # Steps to add new API
 
-* Copy the template model (models/Recipe.js) to a new file in the /models folder and make the modifications outlined in the header.
+* Copy the template model (models/Recipe.js) to a new file in the **models** folder and make the modifications outlined in the header.
 
 ```copy models/Recipe.js --> models/Custom.js```
 
-* Copy the template controller (controllers/RecipeController.js) to a new file in the /controllers folder and make the modifications outlined in the header.
+* Copy the template controller (controllers/RecipeController.js) to a new file in the **controllers** folder and make the modifications outlined in the header.
 
 ```copy controllers/RecipeController.js --> controllers/CustomController.js```
 
@@ -33,3 +33,8 @@ var customController = require('./controllers/CustomController');
 app.use('/api', recipeController);
 app.use('/api', customController);
 ```
+
+# Running the software
+
+* ```node app.js``` for simple setups.
+* I would recommend looking at [the pm2 module](https://www.npmjs.com/package/pm2) for running on a production server.
