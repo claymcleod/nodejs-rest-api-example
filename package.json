@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-secure-rest-api",
+  "version": "0.0.1",
+  "description": "A skeleton for a secure REST api for NodeJS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "REST",
+    "api"
+  ],
+  "author": "Clay McLeod",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.12.3"
+  },
+  "files": ["private"]
+}

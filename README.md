@@ -1,0 +1,1 @@
+A skeleton of a secure RESTFUL api for NodeJS.
