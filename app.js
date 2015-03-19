@@ -1,3 +1,9 @@
+/**
+ * app.js
+ *
+ * Main execution file for this project.
+ */
+
 /** External modules **/
 var express = require('express');
 var mongoose = require('mongoose');
