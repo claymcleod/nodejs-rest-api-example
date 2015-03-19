@@ -51,6 +51,9 @@ app.use('*', function (req, res, next) {
 
  app.use('/', userController);
  app.use('/api', authController.authenticated, recipeController);
+ app.all('*', function (req, res){
+ 	res.status(403).send('403 - Forbidden');
+ })
 
  /** Server deployment **/
  var port = config.PORT || 3000;
