@@ -1,3 +1,3 @@
 module.exports = {
-	DB_PATH: 'mongodb://localhost/mydatabase'
+	DB_PATH: 'mongodb://localhost:27017/mydatabase'
 }
