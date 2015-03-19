@@ -22,6 +22,8 @@ var bodyParser = require('body-parser');
 /**  Model and route setup **/
 
 var model = require(modelLocation).model;
+var userModel = require('../models/User').model;
+
 const route = require(modelLocation).route;
 const routeIdentifier = util.format('/%s', route);
 
@@ -33,12 +35,27 @@ app.use(bodyParser.urlencoded({ extended: false }))
 /** Express routing **/
 
 /*
+ * Check to make sure user option is valid. This prevents user spoofing
+ * and cements and invalid login attempts.
+ *
+ */
+
+ app.use('*', function (req, res, next){
+ 	if (!req.user) res.send('Unauthorized');
+ 	if (userModel.findOne({'_id': req.user._id}, function (err, res) {
+ 		if (err) res.send('Unauthorized');
+ 		next();
+ 	}));
+ });
+
+
+/*
  * Middleware to log requests.
  *
  */
 
 app.all(routeIdentifier+'/', function (req, res, next) {
-	console.log("METHOD: "+req.method+" /"+route);
+	console.log("METHOD: "+req.method+" /"+route+" from "+req.user.username);
 	next();
 })
 
@@ -56,9 +73,10 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  * GET / 
  *
  */
+
  app.get(routeIdentifier+'/', function(req, res, next) {
- 	model.find(function (err, objects) {
- 		if (err) return next(err);
+ 	model.find({'owner':req.user._id}, function (err, objects) {
+ 		if (err) return res.send(err);
  		res.json(objects);
  	});
  });
@@ -67,7 +85,9 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  * POST / 
  *
  */
+
  app.post(routeIdentifier+'/', function(req, res, next) {
+ 	req.body.owner = req.user._id;
  	model.create(req.body, function (err, entry) {
  		if (err) return next(err);
  		res.json(entry);
@@ -78,10 +98,10 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  * GET /:id
  *
  */
- app.get(routeIdentifier+'/:id', function (req, res, next) {
 
+ app.get(routeIdentifier+'/:id', function (req, res, next) {
  	console.info("Looking for ID: "+req.params.id)
- 	model.findById(req.params.id, function (err, entry){
+ 	model.findOne({'_id':req.params.id, 'owner':req.user._id}, function (err, entry){
  		if(err) res.send(err);
  		res.json(entry);
  	});
@@ -91,9 +111,10 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  * PUT /:id
  *
  */
+
  app.put(routeIdentifier+'/:id', function(req, res, next) {
- 	model.findByIdAndUpdate(req.params.id, req.body, function (err, entry) {
- 		if (err) return next(err);
+ 	model.findOneAndUpdate({'_id':req.params.id, 'owner':req.user._id}, req.body, function (err, entry) {
+ 		if (err) return res.send(err);
  		res.json(entry);
  	});
  });
@@ -102,9 +123,10 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  * DELETE /:id
  *
  */
+ 
 app.delete(routeIdentifier+'/:id', function (req, res, next) {
-  model.findByIdAndRemove(req.params.id, req.body, function (err, entry) {
-    if (err) return next(err);
+  model.findOneAndRemove({'_id':req.params.id, 'owner':req.user._id}, req.body, function (err, entry) {
+    if (err) return res.send(err);
     res.json(entry);
   });
 });

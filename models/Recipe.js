@@ -22,8 +22,12 @@ var Schema = new mongoose.Schema({
 	author: String,
 	type: String,
 	feeds: Number,
-	updated_at: { type: Date, default: Date.now }
-})
+	updated_at: { type: Date, default: Date.now },
+	owner: {
+		type: String,
+		required: true
+	}
+});
 
  /****************************************************************
  *				   DO NOT TOUCH BELOW THIS LINE 				 *
