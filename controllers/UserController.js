@@ -5,38 +5,38 @@
  * need to edit this file.
  */
 
-var modelLocation = '../models/User'
+ var modelLocation = '../models/User'
 
  /****************************************************************
  *				   DO NOT TOUCH BELOW THIS LINE 				 *
  ****************************************************************/
 
-var util = require('util');
-var express = require('express');
-var bodyParser = require('body-parser');
+ var util = require('util');
+ var express = require('express');
+ var bodyParser = require('body-parser');
 
-/**  Model and route setup **/
+ /**  Model and route setup **/
 
-var model = require(modelLocation).model;
-const route = require(modelLocation).route;
-const routeIdentifier = util.format('/%s', route);
+ var model = require(modelLocation).model;
+ const route = require(modelLocation).route;
+ const routeIdentifier = util.format('/%s', route);
 
-/** Express setup **/
+ /** Express setup **/
 
-var app = express();
-app.use(bodyParser.urlencoded({ extended: false }))
+ var app = express();
+ app.use(bodyParser.urlencoded({ extended: false }))
 
-/** Express routing **/
+ /** Express routing **/
 
 /*
  * Middleware to log requests.
  *
  */
 
-app.all(routeIdentifier+'/', function (req, res, next) {
-	console.log("METHOD: "+req.method+" /"+route);
-	next();
-});
+ app.all(routeIdentifier+'/', function (req, res, next) {
+ 	console.log("METHOD: "+req.method+" /"+route);
+ 	next();
+ });
 
 /* 
  * GET / 
@@ -61,5 +61,6 @@ app.all(routeIdentifier+'/', function (req, res, next) {
  		res.json(entry);
  	});
  });
+
 
  module.exports = app;

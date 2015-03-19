@@ -21,7 +21,9 @@
     "express-session": "^1.10.4",
     "mongoose": "^3.8.25",
     "passport": "^0.2.1",
-    "passport-http": "^0.2.2"
+    "passport-google": "^0.3.0",
+    "passport-http": "^0.2.2",
+    "passport-local": "^1.0.0"
   },
   "files": [
     "private"

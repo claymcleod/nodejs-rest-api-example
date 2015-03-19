@@ -18,6 +18,7 @@ var modelLocation = '../models/Recipe'
 var util = require('util');
 var express = require('express');
 var bodyParser = require('body-parser');
+var authController = require('./AuthController');
 
 /**  Model and route setup **/
 
@@ -40,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
  *
  */
 
- app.use('*', function (req, res, next){
+ app.use('*', function (req, res, next) {
  	if (!req.user) res.send('Unauthorized');
  	if (userModel.findOne({'_id': req.user._id}, function (err, res) {
  		if (err) res.send('Unauthorized');
