@@ -18,11 +18,17 @@ const route = 'recipe'; 	// Route: 'recipe' routes to /recipe
 const modelId = 'Recipe';  	// Same name as file, no extension: Recipe'
 
 var Schema = new mongoose.Schema({
+
+	/** Make your edits here **/
+	
 	name: {type: String, required: true},
 	author: String,
 	type: String,
 	feeds: Number,
 	updated_at: { type: Date, default: Date.now },
+
+	/** Must keep the owner property **/
+
 	owner: {
 		type: String,
 		required: true

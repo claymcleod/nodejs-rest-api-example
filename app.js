@@ -58,5 +58,3 @@ app.use('*', function (req, res, next) {
  /** Server deployment **/
  var port = config.PORT || 3000;
  app.listen(port)
-
- console.log("Session secret: "+config.SESSION_SECRET);

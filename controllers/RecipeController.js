@@ -49,16 +49,6 @@ var router = express.Router();
  });
 
 /* 
- * GET /clean
- *
- */
-
-router.get(routeIdentifier+'/clean', function (req, res) {
-	model.remove().exec();
-	res.send("API Cleaned.");
-});
-
-/* 
  * GET / 
  *
  */
