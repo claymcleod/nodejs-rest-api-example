@@ -1,6 +1,8 @@
+https://codeship.com/projects/8e512810-b025-0132-3257-0e5ba92aabbb/status?branch=master
+
 # NodeJS secure RESTFUL api
 
-A skeleton of a secure RESTFUL api for NodeJS. Demo of the this project is here: http://nodejs-recipe-book.herokuapp.com/
+A skeleton of a secure RESTFUL api for NodeJS. 
 
 # Steps to add new API
 
