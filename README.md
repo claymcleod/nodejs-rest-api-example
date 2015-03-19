@@ -1,4 +1,6 @@
-A skeleton of a secure RESTFUL api for NodeJS.
+# NodeJS secure RESTFUL api
+
+A skeleton of a secure RESTFUL api for NodeJS. Demo of the this project is here: http://nodejs-recipe-book.herokuapp.com/
 
 # Steps to add new API
 
