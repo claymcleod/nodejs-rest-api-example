@@ -1,4 +1,4 @@
-https://codeship.com/projects/8e512810-b025-0132-3257-0e5ba92aabbb/status?branch=master
+[![Codeship Status](https://codeship.com/projects/8e512810-b025-0132-3257-0e5ba92aabbb/status?branch=master)](https://codeship.com/projects/69472)
 
 # NodeJS secure RESTFUL api
 
