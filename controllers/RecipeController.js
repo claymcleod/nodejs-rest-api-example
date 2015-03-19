@@ -30,8 +30,7 @@ const routeIdentifier = util.format('/%s', route);
 
 /** Express setup **/
 
-var app = express();
-app.use(bodyParser.urlencoded({ extended: false }))
+var router = express.Router();
 
 /** Express routing **/
 
@@ -41,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
  *
  */
 
- app.use('*', function (req, res, next) {
+ router.use('*', function (req, res, next) {
  	if (!req.user) res.send('Unauthorized');
  	if (userModel.findOne({'_id': req.user._id}, function (err, res) {
  		if (err) res.send('Unauthorized');
@@ -49,23 +48,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
  	}));
  });
 
-
-/*
- * Middleware to log requests.
- *
- */
-
-app.all(routeIdentifier+'/', function (req, res, next) {
-	console.log("METHOD: "+req.method+" /"+route+" from "+req.user.username);
-	next();
-})
-
 /* 
  * GET /clean
  *
  */
 
-app.get(routeIdentifier+'/clean', function (req, res) {
+router.get(routeIdentifier+'/clean', function (req, res) {
 	model.remove().exec();
 	res.send("API Cleaned.");
 });
@@ -75,7 +63,7 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  *
  */
 
- app.get(routeIdentifier+'/', function(req, res, next) {
+ router.get(routeIdentifier+'/', function(req, res, next) {
  	model.find({'owner':req.user._id}, function (err, objects) {
  		if (err) return res.send(err);
  		res.json(objects);
@@ -87,7 +75,7 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  *
  */
 
- app.post(routeIdentifier+'/', function(req, res, next) {
+ router.post(routeIdentifier+'/', function(req, res, next) {
  	req.body.owner = req.user._id;
  	model.create(req.body, function (err, entry) {
  		if (err) return next(err);
@@ -100,7 +88,7 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  *
  */
 
- app.get(routeIdentifier+'/:id', function (req, res, next) {
+ router.get(routeIdentifier+'/:id', function (req, res, next) {
  	console.info("Looking for ID: "+req.params.id)
  	model.findOne({'_id':req.params.id, 'owner':req.user._id}, function (err, entry){
  		if(err) res.send(err);
@@ -113,7 +101,7 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  *
  */
 
- app.put(routeIdentifier+'/:id', function(req, res, next) {
+ router.put(routeIdentifier+'/:id', function(req, res, next) {
  	model.findOneAndUpdate({'_id':req.params.id, 'owner':req.user._id}, req.body, function (err, entry) {
  		if (err) return res.send(err);
  		res.json(entry);
@@ -125,11 +113,11 @@ app.get(routeIdentifier+'/clean', function (req, res) {
  *
  */
  
-app.delete(routeIdentifier+'/:id', function (req, res, next) {
+router.delete(routeIdentifier+'/:id', function (req, res, next) {
   model.findOneAndRemove({'_id':req.params.id, 'owner':req.user._id}, req.body, function (err, entry) {
     if (err) return res.send(err);
     res.json(entry);
   });
 });
 
- module.exports = app;
+ module.exports = router;

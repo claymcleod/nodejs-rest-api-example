@@ -57,6 +57,8 @@ Schema.methods.authenticate = function (pass, cb) {
 	});
 };
 
+Schema.plugin(require('mongoose-findorcreate'));
+
  /****************************************************************
  *				   DO NOT TOUCH BELOW THIS LINE 				 *
  ****************************************************************/

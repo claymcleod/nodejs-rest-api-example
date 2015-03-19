@@ -25,29 +25,35 @@
  var app = express();
 
  app.set('json spaces',4);
- 
- app.use(express.static('public'));
+
  app.use(cookieParser());
  app.use(bodyParser.urlencoded({ extended: false }));
  app.use(session(
- 	{ 
- 		secret: config.SESSION_SECRET, 
- 		cookie: 
- 			{
- 				maxAge: 10000
- 			}, 
- 		resave: true,
-    	saveUninitialized: true
-    }
+ { 
+ 	secret: config.SESSION_SECRET, 
+ 	cookie: 
+ 	{
+ 		maxAge: 10000
+ 	}, 
+ 	resave: false,
+ 	saveUninitialized: false
+ }
  ));
  app.use(passport.initialize());
  app.use(passport.session());
 
  /** Express routing **/
 
+app.use('*', function (req, res, next) {
+ 	console.log("METHOD: "+req.method+" "+req.originalUrl);
+ 	next();
+ });
+
  app.use('/', userController);
-app.use('/api', authController.authenticated, recipeController);
+ app.use('/api', authController.authenticated, recipeController);
 
  /** Server deployment **/
- var port = process.env.PORT || 3000;
+ var port = config.PORT || 3000;
  app.listen(port)
+
+ console.log("Session secret: "+config.SESSION_SECRET);

@@ -21,41 +21,18 @@
  const route = require(modelLocation).route;
  const routeIdentifier = util.format('/%s', route);
 
- /** Express setup **/
+ /** Router setup **/
 
- var app = express();
- app.use(bodyParser.urlencoded({ extended: false }))
+ var router = express.Router();
 
  /** Express routing **/
-
-/*
- * Middleware to log requests.
- *
- */
-
- app.all(routeIdentifier+'/', function (req, res, next) {
- 	console.log("METHOD: "+req.method+" /"+route);
- 	next();
- });
-
-/* 
- * GET / 
- *
- */
- 
- app.get(routeIdentifier+'/', function(req, res, next) {
- 	model.find(function (err, objects) {
- 		if (err) return res.send(err);
- 		res.json(objects);
- 	});
- });
 
 /* 
  * POST / 
  *
  */
 
- app.post(routeIdentifier+'/', function(req, res, next) {
+ router.post(routeIdentifier+'/', function(req, res, next) {
  	model.create(req.body, function (err, entry) {
  		if (err) return res.send(err);
  		res.json(entry);
@@ -63,4 +40,4 @@
  });
 
 
- module.exports = app;
+ module.exports = router;
