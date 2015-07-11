@@ -30,8 +30,7 @@ var Schema = new mongoose.Schema({
 	},
 	email: {
 		type: String,
-		unique: true,
-		required: true
+		unique: true
 	}
 });
 
@@ -66,4 +65,4 @@ Schema.plugin(require('mongoose-findorcreate'));
  module.exports = {
  	model: mongoose.model(modelId, Schema),
  	route: route
- } 
+ }

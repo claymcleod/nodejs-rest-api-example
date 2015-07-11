@@ -13,7 +13,6 @@
 
  var util = require('util');
  var express = require('express');
- var bodyParser = require('body-parser');
 
  /**  Model and route setup **/
 
@@ -27,15 +26,40 @@
 
  /** Express routing **/
 
-/* 
- * POST / 
+/*
+ * GET /create
  *
  */
 
- router.post(routeIdentifier+'/', function(req, res, next) {
- 	model.create(req.body, function (err, entry) {
+ router.get(routeIdentifier+'/create', function(req, res, next) {
+    if (req.query === undefined || req.query.username === undefined || req.query.password === undefined) {
+        return res.json({
+            status: 'Failure',
+            message: 'Both username and password must be defined in the query string!'
+        });
+    }
+
+    if (req.query.username === "") {
+        return res.json({
+            status: 'Failure',
+            message: 'Username cannot be empty!'
+        });
+    }
+
+    if (req.query.password === "") {
+        return res.json({
+            status: 'Failure',
+            message: 'Password cannot be empty!'
+        });
+    }
+
+ 	model.create(req.query, function (err, entry) {
  		if (err) return res.send(err);
- 		res.json(entry);
+
+        return res.json({
+            status: 'Success',
+            message: 'User was created!'
+        });
  	});
  });
 
