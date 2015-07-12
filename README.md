@@ -1,5 +1,3 @@
-[![Codeship Status](https://codeship.com/projects/8e512810-b025-0132-3257-0e5ba92aabbb/status?branch=master)](https://codeship.com/projects/69472)
-
 # NodeJS secure RESTFUL api
 
 A minimal, secure RESTFUL api for NodeJS. This project includes user login, access control of objects, and encrypted hashing of passwords right out of the box! Just delete the example model, add your own, and run!
