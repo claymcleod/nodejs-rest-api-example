@@ -44,12 +44,16 @@ app.use('/api', authController.authenticated, customController);
 
 To create users, simply send a GET to /user/create with the required fields in the query string, like so:
 
-```http://localhost:3000/user/create?username=hello&password=world```
+```
+http://localhost:3000/user/create?username=hello&password=world
+```
 
 # API Endpoints
 
-```GET http://localhost:3000/api/recipe/list
+```
+GET http://localhost:3000/api/recipe/list
 GET http://localhost:3000/api/recipe/create?foo=hello&bar=world // creates object with fields foo=hello, bar=world
 GET http://localhost:3000/api/recipe/get/:id // gets object with Mongo id ":id"
 GET http://localhost:3000/api/update/get/:id?foo=hello&bar=world // updates object with Mongo id ":id" and fields foo=hello, bar=world
-GET http://localhost:3000/api/recipe/delete/:id // deletes object with Mongo id ":id"```
+GET http://localhost:3000/api/recipe/delete/:id // deletes object with Mongo id ":id"
+```
