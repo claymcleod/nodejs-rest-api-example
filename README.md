@@ -29,8 +29,8 @@ var customController = require('./controllers/CustomController');
 * Add the routing line to app.js underneath the existing routes, like so:
 
 ```
-app.use('/api', authController.authenticated, recipeController);
-app.use('/api', authController.authenticated, customController);
+app.use('/api', recipeController);
+app.use('/api', customController);
 ```
 
 # Running the software
