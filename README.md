@@ -2,7 +2,7 @@
 
 # NodeJS secure RESTFUL api
 
-A minimal, secure RESTFUL api for NodeJS. This project includes user login, access control of objects, and encrypted hashing of passwords right out of the box! Just delete the example models, add your own, and run!
+A minimal, secure RESTFUL api for NodeJS. This project includes user login, access control of objects, and encrypted hashing of passwords right out of the box! Just delete the example model, add your own, and run!
 
 # Installation
 
@@ -28,9 +28,9 @@ var recipeController = require('./controllers/RecipeController');
 var customController = require('./controllers/CustomController');
 ```
 
-* Add the routing line to app.js underneath the existing routes, like so: 
+* Add the routing line to app.js underneath the existing routes, like so:
 
-``` 
+```
 app.use('/api', authController.authenticated, recipeController);
 app.use('/api', authController.authenticated, customController);
 ```
@@ -42,12 +42,14 @@ app.use('/api', authController.authenticated, customController);
 
 # Creating users
 
-To create users, simply send a POST to /user with the required fields, like so:
+To create users, simply send a GET to /user/create with the required fields in the query string, like so:
 
-```curl --data "username=claymcleod&password=helloworld&email=bla@aol.com" localhost:3000/user```
+```http://localhost:3000/user/create?username=hello&password=world```
 
-# Retrieving recipes
+# API Endpoints
 
-Similarly, we can retrieve recipes using cURL:
-
-```curl -u claymcleod:helloworld localhost:3000/api/recipe```
+```GET http://localhost:3000/api/recipe/list
+GET http://localhost:3000/api/recipe/create?foo=hello&bar=world // creates object with fields foo=hello, bar=world
+GET http://localhost:3000/api/recipe/get/:id // gets object with Mongo id ":id"
+GET http://localhost:3000/api/update/get/:id?foo=hello&bar=world // updates object with Mongo id ":id" and fields foo=hello, bar=world
+GET http://localhost:3000/api/recipe/delete/:id // deletes object with Mongo id ":id"```

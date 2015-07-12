@@ -13,6 +13,7 @@
 
  var util = require('util');
  var express = require('express');
+ var router = express.Router();
  var passport = require('passport');
  var config = require('../private/config');
 
@@ -21,34 +22,61 @@
  var User = require(modelLocation).model;
 
  /****************************************************************
- *				   			Basic Strategy 		         		 *
+ *				   			Local Strategy 		         		 *
  ****************************************************************/
 
- var BasicStrategy = require('passport-http').BasicStrategy;
+var LocalStrategy = require('passport-local').Strategy;
 
- passport.use(new BasicStrategy(
- 	function (username, password, cb) {
- 		User.findOne({username: username}, function (err, user){
- 			if (err) return cb(err);
- 			if (!user) return cb(null, null);
+passport.use('local', new LocalStrategy({
+        passReqToCallback: true
+    },
+    function(req, username, password, done) {
+        var caseInsensitiveRegex = new RegExp('^' + username + '$', "i");
+        User.findOne({
+                'username': caseInsensitiveRegex
+            },
+            function(err, user) {
+                if (err) return done(err);
+                if (!user) return done(null, false, req.flash('error', 'User Not found.'));
 
- 			user.authenticate(password, function(err, authenticated){
- 				if (err) return cb(err);
- 				if (!authenticated) return cb(err, false);
- 				return cb(null, user);
- 			});
- 		});
- 	}
- 	));
+                user.authenticate(password, function(res) {
+                    if (res === false)
+                        return done(null, false, req.flash('error', 'Invalid Password'));
+
+                    req.logIn(user, function(err) {
+                        if (err) return next(err);
+                        return done(null, user);
+                    });
+                });
+            });
+
+    }));
 
  passport.serializeUser(function(user, done) {
- 	done(null, user);
+    done(null, user);
  });
 
- passport.deserializeUser(function(user, done) {
- 	User.findById(user.id, function (err, user) {
- 		done(err, user);
- 	});
+passport.deserializeUser(function(user, done) {
+    User.findById(user._id, function (err, user) {
+        done(err, user);
+    });
  });
 
- exports.authenticated = passport.authenticate('basic', {session: true});
+module.exports.isAuthenticated = function (req, res, next) {
+    if (!req.user) return res.status(403).send('Unauthorized');
+    if (User.findOne({'_id': req.user._id}, function (err, res) {
+        if (err) return res.status(403).send('Unauthorized');
+        next();
+    }));
+}
+
+/****************************************************************
+ *                          Login methods                       *
+ ****************************************************************/
+
+ router.post('/login', passport.authenticate('local'), function(req, res) {
+    console.log('User: ',req.user.username);
+    return res.json({status: 'Success', message: 'Logged in!'})
+  });
+
+ module.exports.router = router;

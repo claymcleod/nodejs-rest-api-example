@@ -41,73 +41,94 @@ var router = express.Router();
  */
 
  router.use('*', function (req, res, next) {
- 	if (!req.user) res.send('Unauthorized');
+ 	if (!req.user) {
+        return res.status(403).send('403 - Forbidden');
+    }
+
  	if (userModel.findOne({'_id': req.user._id}, function (err, res) {
- 		if (err) res.send('Unauthorized');
+ 		if (err) {
+            return res.send(err);
+        }
+
  		next();
  	}));
  });
 
-/* 
- * GET / 
+/*
+ * GET /list
  *
  */
 
- router.get(routeIdentifier+'/', function(req, res, next) {
+ router.get(routeIdentifier+'/list', function(req, res, next) {
  	model.find({'owner':req.user._id}, function (err, objects) {
  		if (err) return res.send(err);
- 		res.json(objects);
+ 		return res.json(objects);
  	});
  });
 
-/* 
- * POST / 
+/*
+ * GET /create
  *
  */
 
- router.post(routeIdentifier+'/', function(req, res, next) {
+ router.get(routeIdentifier+'/create', function(req, res, next) {
  	req.body.owner = req.user._id;
- 	model.create(req.body, function (err, entry) {
+ 	model.create(req.query, function (err, entry) {
  		if (err) return next(err);
- 		res.json(entry);
+ 		return res.json({
+            status: 'Success',
+            message: 'Item created!'
+        });
  	});
  });
 
-/* 
- * GET /:id
+/*
+ * GET /get/:id
  *
  */
 
- router.get(routeIdentifier+'/:id', function (req, res, next) {
- 	console.info("Looking for ID: "+req.params.id)
- 	model.findOne({'_id':req.params.id, 'owner':req.user._id}, function (err, entry){
- 		if(err) res.send(err);
- 		res.json(entry);
+ router.get(routeIdentifier+'/get/:id', function (req, res, next) {
+ 	model.findOne({
+        '_id':req.params.id,
+        'owner':req.user._id
+    }, function (err, entry){
+ 		if(err) return res.send(err);
+ 		return res.json(entry);
  	});
  });
 
-/* 
- * PUT /:id
+/*
+ * GET /update/:id
  *
  */
 
- router.put(routeIdentifier+'/:id', function(req, res, next) {
- 	model.findOneAndUpdate({'_id':req.params.id, 'owner':req.user._id}, req.body, function (err, entry) {
+ router.get(routeIdentifier+'/update/:id', function(req, res, next) {
+ 	model.findOneAndUpdate({
+        '_id':req.params.id,
+        'owner':req.user._id
+    },
+    req.query,
+    function (err, entry) {
  		if (err) return res.send(err);
- 		res.json(entry);
+ 		return res.json({status: 'Success', message: 'Updated item'});
  	});
  });
 
-/* 
- * DELETE /:id
+/*
+ * GET /delete/:id
  *
  */
- 
-router.delete(routeIdentifier+'/:id', function (req, res, next) {
-  model.findOneAndRemove({'_id':req.params.id, 'owner':req.user._id}, req.body, function (err, entry) {
-    if (err) return res.send(err);
-    res.json(entry);
-  });
+
+router.get(routeIdentifier+'/delete/:id', function (req, res, next) {
+  model.findOneAndRemove({
+        '_id':req.params.id,
+        'owner':req.user._id
+    },
+    req.body,
+    function (err, entry) {
+        if (err) return res.send(err);
+        return res.json({status: 'Success', message: 'Deleted item'});
+    });
 });
 
  module.exports = router;

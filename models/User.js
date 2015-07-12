@@ -51,8 +51,9 @@ Schema.pre('save', function (cb) {
 
 Schema.methods.authenticate = function (pass, cb) {
 	bcrypt.compare(pass, this.password, function (err, res){
+		console.log("Login: "+res);
 		if (err) return cb(err);
-		cb(null, res);
+		cb(res);
 	});
 };
 
