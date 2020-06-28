@@ -34,7 +34,7 @@
  }))
  app.use(passport.initialize());
  app.use(passport.session());
-
+ app.use(bodyParser.json());
  /** Express routing **/
 
 app.use('*', function (req, res, next) {
