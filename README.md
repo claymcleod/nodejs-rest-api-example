@@ -40,10 +40,17 @@ app.use('/api', customController);
 
 # Creating users
 
-To create users, simply send a GET to /user/create with the required fields in the query string, like so:
+To create users, simply send a POST to /user/create with a sample json, like so:
 
 ```
-http://localhost:3000/user/create?username=hello&password=world
+http://localhost:3000/user/create
+```
+
+```
+{
+    "username": "hello",
+    "password": "world"
+}
 ```
 
 # API Endpoints
